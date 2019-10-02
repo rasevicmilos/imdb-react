@@ -12,3 +12,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.myNavbar {
+  min-height: 100px;
+  background-color: dodgerblue;
+}
+
+.image {
+  max-height: 100%;
+  max-width: 100%;
+}

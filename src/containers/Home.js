@@ -5,9 +5,16 @@ import { withRouter } from 'react-router-dom';
 import { getMovies } from '../store/actions/MovieActions';
 import MovieCard from '../component/MovieCard';
 
+import Pages from '../component/Pages';
+
 class Home extends Component {
   componentDidMount() {
-    this.props.getMovies();
+    this.props.getMovies(this.props.match.params.id);
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.getMovies(this.props.match.params.id);
+    }
   }
 
   renderMovies = () => {
@@ -16,10 +23,9 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-        <p>Welcome to Pocket IMDb</p>
-        <h4>Movies</h4>
-        {this.renderMovies()}
+      <div className="container">
+          {this.renderMovies()}
+          <Pages></Pages>
       </div>
     );
   }

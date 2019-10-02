@@ -7,12 +7,13 @@ import Login from '../containers/auth/Login';
 import Register from '../containers/auth/Register';
 import Home from '../containers/Home';
 import { authUser } from '../store/actions/AuthActions';
+import Navbar from './Navbar';
 
 class AppLayout extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.user !== prevProps.user) {
       if (this.props.user) {
-        this.props.history.push('/home');
+        this.props.history.push('/home/1');
       } else {
         this.props.history.push('/login');
       }
@@ -22,7 +23,8 @@ class AppLayout extends React.Component {
   render() {
     return this.props.user ? (
       <div>
-        <Route exact path="/home" component={Home} />
+        <Navbar></Navbar>
+        <Route exact path="/home/:id" component={Home} />
       </div>
     ) : (
       <div>
