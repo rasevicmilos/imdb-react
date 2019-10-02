@@ -9,7 +9,7 @@ export function* userLogin({ payload }) {
     yield call(AuthService.login, payload);
 
     yield put(authUser(true));
-    yield put(push('/home'));
+    yield put(push('/home/1'));
     yield put(go());
   } catch (error) {
     yield put(loginError(true));
