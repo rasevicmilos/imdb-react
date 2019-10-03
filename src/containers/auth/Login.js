@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 import { logIn } from '../../store/actions/AuthActions';
 
 class Login extends Component {
@@ -83,6 +83,7 @@ class Login extends Component {
             {this.props.loginError && <p className="text-danger">Wrong username/password</p>}
             <input className="btn btn-primary" type="submit" value="Log in" />
           </form>
+          <p className="pt-3">Don't have an account? <Link to="/register">Sign up</Link></p>
         </div>
       </div>
     );

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+
 import { getMovies } from '../store/actions/MovieActions';
 import MovieCard from '../component/MovieCard';
 
 import Pages from '../component/Pages';
+import AddMovieDialog from '../component/AddMovieDialog';
 
 class Home extends Component {
   componentDidMount() {
@@ -18,12 +20,13 @@ class Home extends Component {
   }
 
   renderMovies = () => {
-    return this.props.movies.map(movie => <MovieCard key={movie.id} movie={movie} />);
+    return this.props.movies.map(movie => <MovieCard key={movie.id} movie={movie} history={this.props.history}/>);
   };
 
   render() {
     return (
       <div className="container">
+          <AddMovieDialog></AddMovieDialog>
           {this.renderMovies()}
           <Pages></Pages>
       </div>

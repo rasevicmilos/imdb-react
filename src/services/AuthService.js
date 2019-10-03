@@ -3,7 +3,7 @@ import ApiService from './ApiService';
 const ENDPOINTS = {
   LOGIN: '/api/auth/login',
   REGISTER: '/api/auth/register',
-  LOGOUT: '/logout'
+  LOGOUT: '/api/auth/logout'
 };
 
 class AuthService extends ApiService {
