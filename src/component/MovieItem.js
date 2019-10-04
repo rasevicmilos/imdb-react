@@ -16,12 +16,18 @@ class MovieItem extends Component {
                             <img src={this.props.movie.image_url} className="image" alt=""/>
                         </div>
                         <div className="col">
-                            <h4 className="card-title">
-                                {this.props.movie.title}
-                            </h4>
+                            <div>
+                                <p className="float-right">
+                                    Views: {this.props.movie.number_of_views}
+                                </p> 
+                                <h4 className="card-title">
+                                    {this.props.movie.title}
+                                </h4>
+                            </div>
                             {this.props.movie.genre && <p>
                                 {this.props.movie.genre.name}
                             </p> }
+                                
                         <div className="card-content">
                             <div className="card">
                                 <div className="card-content m-3">

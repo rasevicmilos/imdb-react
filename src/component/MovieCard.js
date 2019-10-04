@@ -15,9 +15,17 @@ class MovieCard extends Component {
               <img src={this.props.movie.image_url} className="image" alt=""/>
             </div>
             <div className="col">
-              <h4 className="card-title">
-                {this.props.movie.title}
-              </h4>
+              <div>
+                    {this.props.movie.number_of_views ? (
+                        <p className="float-right">Views: {this.props.movie.number_of_views}</p>
+                    ):(
+                        <p className="float-right">No views</p>
+
+                    )}
+                  <h4 className="card-title">
+                      {this.props.movie.title}
+                  </h4>
+              </div>
               <div className="card-content">
                 <div className="card">
                   <div className="card-content m-3">

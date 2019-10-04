@@ -8,6 +8,7 @@ import MovieCard from '../component/MovieCard';
 
 import Pages from '../component/Pages';
 import AddMovieDialog from '../component/AddMovieDialog';
+import Search from '../component/Search';
 
 class Home extends Component {
   componentDidMount() {
@@ -34,7 +35,10 @@ class Home extends Component {
   render() {
     return (
       <div className="container">
-          <AddMovieDialog></AddMovieDialog>
+          <div className="mb-4">
+            <Search history={this.props.history}></Search>
+            <AddMovieDialog></AddMovieDialog>
+          </div>
           {this.renderMovies()}
           <Pages></Pages>
       </div>
