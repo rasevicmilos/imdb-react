@@ -1,4 +1,4 @@
-import { GET_MOVIES, SET_MOVIES, SET_PAGES, GET_MOVIE, SET_MOVIE, ADD_NEW_MOVIE, SET_NEW_MOVIE } from './ActionTypes';
+import { GET_MOVIES, SET_MOVIES, SET_PAGES, GET_MOVIE, SET_MOVIE, ADD_NEW_MOVIE, SET_NEW_MOVIE, SEARCH_MOVIES, SET_QUERY } from './ActionTypes';
 
 export const getMovies = payload => {
   return {
@@ -45,6 +45,20 @@ export const addNewMovie = payload => {
 export const setNewMovie = payload => {
   return {
     type: SET_NEW_MOVIE,
+    payload
+  }
+}
+
+export const searchMovies = payload => {
+  return {
+    type: SEARCH_MOVIES,
+    payload
+  }
+}
+
+export const setQuery = payload => {
+  return {
+    type: SET_QUERY,
     payload
   }
 }

@@ -24,7 +24,7 @@ class AppLayout extends React.Component {
   render() {
     return this.props.user ? (
       <div>
-        <Navbar></Navbar>
+        <Navbar history={this.props.history}></Navbar>
         <Route exact path="/home/:id" component={Home} history={this.props.history}/>
         <Route exact path="/movie/:id" component={MovieItem} />
       </div>

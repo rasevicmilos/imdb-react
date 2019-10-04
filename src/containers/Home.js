@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 
-import { getMovies } from '../store/actions/MovieActions';
+import { getMovies, searchMovies } from '../store/actions/MovieActions';
 import MovieCard from '../component/MovieCard';
 
 import Pages from '../component/Pages';
@@ -15,13 +15,21 @@ class Home extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.props.getMovies(this.props.match.params.id);
+      if(this.isEmptyOrSpaces(this.props.queryString)) {
+        this.props.getMovies(this.props.match.params.id);
+      } else {
+        this.props.searchMovies({ query: this.props.queryString, page:this.props.match.params.id });
+      }
     }
   }
 
   renderMovies = () => {
     return this.props.movies.map(movie => <MovieCard key={movie.id} movie={movie} history={this.props.history}/>);
   };
+
+  isEmptyOrSpaces = (str) => {
+    return str === null || str.match(/^ *$/) !== null;
+  }
 
   render() {
     return (
@@ -36,12 +44,14 @@ class Home extends Component {
 
 const mapStateToProps = state => {
   return {
-    movies: state.movie.all
+    movies: state.movie.all,
+    queryString: state.movie.queryString
   };
 };
 
 const mapDispatchToProps = {
-  getMovies
+  getMovies,
+  searchMovies
 };
 
 export default withRouter(

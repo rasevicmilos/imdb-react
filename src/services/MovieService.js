@@ -2,7 +2,8 @@ import ApiService from './ApiService';
 
 const ENDPOINTS = {
   MOVIES: '/api/movies?page=',
-  MOVIE: '/api/movies/'
+  MOVIE: '/api/movies/',
+  SEARCH: '/api/search?query='
 };
 
 class MovieService extends ApiService {
@@ -16,6 +17,11 @@ class MovieService extends ApiService {
 
   addNewMovie = (movie) => {
     return this.apiClient.post(ENDPOINTS.MOVIE, movie);
+  }
+
+  search = (payload) => {
+    console.log(payload);
+    return this.apiClient.get(ENDPOINTS.SEARCH + payload.query + '&page=' + payload.page);
   }
 }
 

@@ -1,9 +1,10 @@
-import { SET_MOVIES, SET_PAGES, SET_MOVIE, SET_NEW_MOVIE } from '../actions/ActionTypes';
+import { SET_MOVIES, SET_PAGES, SET_MOVIE, SET_NEW_MOVIE, SET_QUERY } from '../actions/ActionTypes';
 
 const initialState = {
   all: [],
   pages: 1,
-  activeMovie: {}
+  activeMovie: {},
+  queryString: ''
 };
 const movieReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -15,6 +16,8 @@ const movieReducer = (state = initialState, action) => {
       return { ...state, activeMovie: action.payload};
     case SET_NEW_MOVIE:
       return { ...state, all: [...state.all, action.payload] }
+    case SET_QUERY:
+      return { ...state, queryString: action.payload}
     default:
       return state;
   }
