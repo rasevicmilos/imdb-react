@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { movieService } from '../../services/MovieService';
-import { setMovies, setPages, setMovie, setNewMovie, setQuery } from '../actions/MovieActions';
+import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked } from '../actions/MovieActions';
 
 export function* moviesGet({ payload }) {
   try {
@@ -16,7 +16,6 @@ export function* movieGet({ payload }) {
   try {
     const { data } = yield call(movieService.getMovie, payload);
     yield put(setMovie(data));
-    console.log(data);
   } catch (error) {
     console.log({ error }); /*eslint-disable-line*/
   }
@@ -37,6 +36,42 @@ export function* movieSearch({ payload }) {
     yield put(setMovies(data.data));
     yield put(setPages(data.last_page));
     yield put(setQuery(payload.query));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* movieLike({ payload }) {
+  try {
+    const { data } = yield call(movieService.like, payload);
+    yield put(setLiked(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* movieDislike({ payload }) {
+  try {
+    const { data } = yield call(movieService.dislike, payload);
+    yield put(setLiked(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* movieRemoveLike({ payload }) {
+  try {
+    const { data } = yield call(movieService.removeLike, payload);
+    yield put(setLiked(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* movieRemoveDislike({ payload }) {
+  try {
+    const { data } = yield call(movieService.removeDislike, payload);
+    yield put(setLiked(data));
   } catch (error) {
     console.log(error);
   }

@@ -20,3 +20,12 @@ export const SET_NEW_MOVIE = 'SET_NEW_MOVIE';
 
 export const SEARCH_MOVIES = 'SEARCH_MOVIES';
 export const SET_QUERY = 'SET_QUERY';
+
+export const LIKE_MOVIE = 'LIKE_MOVIE';
+export const SET_LIKED = 'SET_LIKED';
+export const DISLIKE_MOVIE = 'DISLIKE_MOVIE';
+
+export const REMOVE_LIKE = 'REMOVE_LIKE';
+// export const SET_REMOVED_LIKE = 'SET_REMOVED_LIKE';
+export const REMOVE_DISLIKE = 'REMOVE_DISLIKE';
+// export const SET_REMOVED_DISLIKE = 'SET_REMOVED_DISLIKE';
