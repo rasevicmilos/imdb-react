@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import { addNewMovie } from '../store/actions/MovieActions';
 import { connect } from 'react-redux';
+import { getGenres } from '../store/actions/GenreActions';
 
 class AddMovieDialog extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class AddMovieDialog extends Component {
             title: '',
             description: '',
             imageUrl: '',
-            genre: 1
+            genre: 1,
         }
     }
 
@@ -86,6 +87,11 @@ class AddMovieDialog extends Component {
         return str === null || str.match(/^ *$/) !== null;
     }
 
+    componentDidMount(){
+        this.props.getGenres();
+        console.log(this.props.genres);
+    }
+
     render() {
         return (
             <div className="my-2">
@@ -135,10 +141,9 @@ class AddMovieDialog extends Component {
                         className="genre"
                         value={this.state.genre}
                         >
-                            <option key={1} value={1}>Comedy</option>
-                            <option key={2} value={2}>Action</option>
-                            <option key={3} value={3}>Drama</option>
-                            <option key={4} value={4}>Horror</option>
+                            {this.props.genres.map(genre => 
+                                <option key={genre.id} value={genre.id}>{genre.name}</option>
+                                )}
                     </select>
                     </DialogContent>
                     <DialogActions>
@@ -155,8 +160,15 @@ class AddMovieDialog extends Component {
     }
 }
 
-const mapDispatchToProps = {
-    addNewMovie
+const mapStateToProps = (state) => {
+    return {
+        genres: state.genre.genres
+    }
 }
 
-export default connect(null, mapDispatchToProps)(AddMovieDialog)
+const mapDispatchToProps = {
+    addNewMovie,
+    getGenres
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddMovieDialog)

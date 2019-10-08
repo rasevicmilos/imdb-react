@@ -1,4 +1,4 @@
-import { GET_MOVIES, SET_MOVIES, SET_PAGES, GET_MOVIE, SET_MOVIE, ADD_NEW_MOVIE, SET_NEW_MOVIE, SEARCH_MOVIES, SET_QUERY, LIKE_MOVIE, SET_LIKED, DISLIKE_MOVIE, REMOVE_LIKE, REMOVE_DISLIKE } from './ActionTypes';
+import { GET_MOVIES, SET_MOVIES, SET_PAGES, GET_MOVIE, SET_MOVIE, ADD_NEW_MOVIE, SET_NEW_MOVIE, SEARCH_MOVIES, SET_QUERY, LIKE_MOVIE, SET_LIKED, DISLIKE_MOVIE, REMOVE_LIKE, REMOVE_DISLIKE, SET_GENRE } from './ActionTypes';
 
 export const getMovies = payload => {
   return {
@@ -94,6 +94,13 @@ export const removeLike = payload => {
 export const removeDislike = payload => {
   return {
     type: REMOVE_DISLIKE,
+    payload
+  }
+}
+
+export const setGenre = payload => {
+  return {
+    type: SET_GENRE,
     payload
   }
 }

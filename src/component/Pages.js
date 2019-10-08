@@ -7,7 +7,7 @@ class Pages extends Component {
         var pages = [];
         const numberOfPages = this.props.pages;
         for (var i = 1; i <= numberOfPages; i++) {
-            pages.push(<Link to={'/home/' + i} key={i}  className="list-group-item">{i}</Link>)
+            pages.push(<Link to={'/home/' + i} key={i}  className="list-group-item myColor">{i}</Link>)
         }
         return (
             <div className="d-flex mt-4 mb-4">

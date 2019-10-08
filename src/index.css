@@ -6,6 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
 }
 
 code {
@@ -15,10 +16,18 @@ code {
 
 .myNavbar {
   min-height: 100px;
-  background-color: dodgerblue;
+  background-color: #30369c;
 }
 
 .image {
-  max-height: 100%;
-  max-width: 100%;
+  min-width: 80%;
+  min-height: 80%;
+  max-height: 80%;
+  max-width: 80%;
+  display: block;
+  margin: auto;
+}
+
+.myColor {
+  background-color: #f2f2f2;
 }

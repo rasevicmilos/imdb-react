@@ -22,10 +22,10 @@ class MovieCard extends Component {
     }
     render() {
       return (
-        <div className="card mt-2 p-3">
+        <div className="card mt-2 p-3 myColor">
           <div className="container">
-            <div className="row">
-              <div className="col-sm-3 m-auto">
+            <div className="row movieRow">
+              <div className="col-sm-4 col-lg-3 m-auto">
                 <img 
                   onClick={() => this.showMovie(this.props.movie.id)} 
                   src={this.props.movie.image_url} 
@@ -82,7 +82,7 @@ class MovieCard extends Component {
                     </div>
                 </div>
                 <div className="card-content">
-                  <div className="card">
+                  <div className="card myColor">
                     <div className="card-content m-3">
                       {this.props.movie.description}
                     </div>

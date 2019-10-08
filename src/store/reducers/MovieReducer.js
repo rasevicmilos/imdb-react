@@ -1,10 +1,11 @@
-import { SET_MOVIES, SET_PAGES, SET_MOVIE, SET_NEW_MOVIE, SET_QUERY, SET_LIKED } from '../actions/ActionTypes';
+import { SET_MOVIES, SET_PAGES, SET_MOVIE, SET_NEW_MOVIE, SET_QUERY, SET_LIKED, SET_GENRE } from '../actions/ActionTypes';
 
 const initialState = {
   all: [],
   pages: 1,
   activeMovie: {},
-  queryString: ''
+  queryString: '',
+  activeGenre: 0
 };
 const movieReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -18,6 +19,8 @@ const movieReducer = (state = initialState, action) => {
       return { ...state, all: [...state.all, action.payload] }
     case SET_QUERY:
       return { ...state, queryString: action.payload}
+    case SET_GENRE:
+      return { ...state, activeGenre: action.payload}
     case SET_LIKED:
       return { ...state, activeMovie: action.payload, all: state.all.map(movie => 
         movie.id === action.payload.id

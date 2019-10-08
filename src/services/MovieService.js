@@ -24,7 +24,7 @@ class MovieService extends ApiService {
   }
 
   search = (payload) => {
-    return this.apiClient.get(ENDPOINTS.SEARCH + payload.query + '&page=' + payload.page);
+    return this.apiClient.get(ENDPOINTS.SEARCH + payload.query + '&page=' + payload.page + '&genre=' + payload.genre);
   }
 
   like = (movieId) => {

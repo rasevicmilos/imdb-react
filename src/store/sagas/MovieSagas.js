@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { movieService } from '../../services/MovieService';
-import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked } from '../actions/MovieActions';
+import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked, setGenre } from '../actions/MovieActions';
 
 export function* moviesGet({ payload }) {
   try {
@@ -36,6 +36,7 @@ export function* movieSearch({ payload }) {
     yield put(setMovies(data.data));
     yield put(setPages(data.last_page));
     yield put(setQuery(payload.query));
+    yield put(setGenre(payload.genre));
   } catch (error) {
     console.log(error);
   }

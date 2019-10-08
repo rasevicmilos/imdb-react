@@ -16,10 +16,10 @@ class Home extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      if(this.isEmptyOrSpaces(this.props.queryString)) {
+      if(this.isEmptyOrSpaces(this.props.queryString) && this.props.genre === 0) {
         this.props.getMovies(this.props.match.params.id);
       } else {
-        this.props.searchMovies({ query: this.props.queryString, page:this.props.match.params.id });
+        this.props.searchMovies({ query: this.props.queryString, page:this.props.match.params.id, genre: this.props.genre});
       }
     }
   }
@@ -49,7 +49,8 @@ class Home extends Component {
 const mapStateToProps = state => {
   return {
     movies: state.movie.all,
-    queryString: state.movie.queryString
+    queryString: state.movie.queryString,
+    genre: state.movie.activeGenre
   };
 };
 
