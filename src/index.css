@@ -6,9 +6,28 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.myNavbar {
+  min-height: 100px;
+  background-color: #30369c;
+}
+
+.image {
+  min-width: 80%;
+  min-height: 80%;
+  max-height: 80%;
+  max-width: 80%;
+  display: block;
+  margin: auto;
+}
+
+.myColor {
+  background-color: #f2f2f2;
 }
