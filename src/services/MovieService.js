@@ -7,7 +7,12 @@ const ENDPOINTS = {
   LIKE: '/api/like/',
   DISLIKE: '/api/dislike/',
   REMOVE_LIKE: '/api/remove-like/',
-  REMOVE_DISLIKE: '/api/remove-dislike/'
+  REMOVE_DISLIKE: '/api/remove-dislike/',
+  ADD_COMMENT: '/api/comments',
+  GET_WATCHLIST: 'api/get-movies',
+  ADD_TO_WATCHLIST: 'api/add-to-watch-list/',
+  REMOVE_FROM_WATCHLIST: 'api/remove-from-watch-list/',
+  ADD_TO_WATCHED: 'api/add-to-watched/'
 };
 
 class MovieService extends ApiService {
@@ -41,6 +46,26 @@ class MovieService extends ApiService {
 
   removeDislike = (movieId) => {
     return this.apiClient.get(ENDPOINTS.REMOVE_DISLIKE + movieId)
+  }
+
+  addComment = (comment) => {
+    return this.apiClient.post(ENDPOINTS.ADD_COMMENT, comment);
+  }
+
+  getWatchList = () => {
+    return this.apiClient.get(ENDPOINTS.GET_WATCHLIST);
+  }
+
+  addToWatchList = (movieId) => {
+    return this.apiClient.get(ENDPOINTS.ADD_TO_WATCHLIST + movieId);
+  }
+
+  removeFromWatchList = (movieId) => {
+    return this.apiClient.get(ENDPOINTS.REMOVE_FROM_WATCHLIST + movieId);
+  }
+
+  markAsWatched = (movieId) => {
+    return this.apiClient.get(ENDPOINTS.ADD_TO_WATCHED + movieId);
   }
 }
 

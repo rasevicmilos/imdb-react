@@ -7,40 +7,68 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
-import { addNewMovie } from '../store/actions/MovieActions';
+import { addNewMovie, setOpen, setClosed } from '../store/actions/MovieActions';
 import { connect } from 'react-redux';
 import { getGenres } from '../store/actions/GenreActions';
+import FormLabel from '@material-ui/core/FormLabel';
 
 class AddMovieDialog extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            open: false,
             title: '',
             description: '',
             imageUrl: '',
             genre: 1,
+            imageError: false,
+            addDisabled: true
         }
     }
 
-    handleClickOpen = () => {
-        this.setOpen(true);
-    }
-
-    setOpen = (open) => {
+    reset = () => {
         this.setState({
-            open
+            title: '',
+            description: '',
+            imageUrl: '',
+            genre: 1,
+            imageError: false,
+            addDisabled: true
         })
     }
+
+    handleClickOpen = () => {
+        this.props.setOpen();
+    }
+
     handleClose = () => {
-        this.setOpen(false);
+        this.props.setClosed();
+        this.reset();
     }
     
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         });
+        setTimeout(
+            function() {
+                this.checkDisabled();
+            }
+            .bind(this),
+            300
+        );
+    }
+
+    checkDisabled = () => {
+        if(!this.isEmptyOrSpaces(this.state.title) && !this.isEmptyOrSpaces(this.state.description)){
+            this.setState({
+                addDisabled: false
+            });
+        } else {
+            this.setState({
+                addDisabled: true
+            });
+        }
     }
 
     handleGenreChange = (e) => {
@@ -62,18 +90,18 @@ class AddMovieDialog extends Component {
             newMovie = {...newMovie, image_url: this.state.imageUrl}
         }
         
-        console.log(newMovie.image_url);
-
         if(newMovie.image_url){
             if(this.isLinkValid(newMovie.image_url)){
                 this.props.addNewMovie(newMovie);
                 this.handleClose();
             } else {
-                alert('Please enter a valid link!');
+                this.setState({
+                    imageError: true
+                })
             }
         } else {
             this.props.addNewMovie(newMovie);
-            this.handleClose();
+            this.reset();
         }
     }
 
@@ -98,7 +126,7 @@ class AddMovieDialog extends Component {
                 <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
                     Add a new movie
                 </Button>
-                <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                <Dialog open={this.props.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Add</DialogTitle>
                     <DialogContent>
                     <DialogContentText>
@@ -108,23 +136,25 @@ class AddMovieDialog extends Component {
                         autoFocus
                         margin="dense"
                         id="title"
-                        label="Title"
+                        label="*Title"
                         type="text"
                         name="title"
                         onChange={this.handleChange}
                         value={this.state.title}
                         fullWidth
                     />
+                    {this.props.addMovieError['title'] && <FormLabel className="text-danger">{this.props.addMovieError['title']}</FormLabel>}
                     <TextField
                         margin="dense"
                         id="description"
-                        label="Description"
+                        label="*Description"
                         type="text"
                         name="description"
                         onChange={this.handleChange}
                         value={this.state.description}
                         fullWidth
                     />
+                    {this.props.addMovieError['description'] && <FormLabel className="text-danger">{this.props.addMovieError['description']}</FormLabel>}
                     <TextField
                         margin="dense"
                         id="imageUrl"
@@ -135,7 +165,8 @@ class AddMovieDialog extends Component {
                         value={this.state.imageUrl}
                         fullWidth
                     />
-                    <InputLabel className="mt-3" htmlFor="genre">Genre</InputLabel>
+                    {this.state.imageError && <FormLabel className="text-danger">Please enter a valid link, or leave this field empty</FormLabel>}
+                    <InputLabel className="mt-3" htmlFor="genre">*Genre</InputLabel>
                     <select name="genre" 
                         onChange={this.handleGenreChange} 
                         className="genre"
@@ -145,12 +176,13 @@ class AddMovieDialog extends Component {
                                 <option key={genre.id} value={genre.id}>{genre.name}</option>
                                 )}
                     </select>
+                    <FormLabel className="float-right">* - required</FormLabel>
                     </DialogContent>
                     <DialogActions>
                     <Button onClick={this.handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button variant="contained" onClick={this.handleSubmit} color="primary">
+                    <Button variant="contained" disabled={this.state.addDisabled} onClick={this.handleSubmit} color="primary">
                         Add
                     </Button>
                     </DialogActions>
@@ -162,13 +194,17 @@ class AddMovieDialog extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        genres: state.genre.genres
+        genres: state.genre.genres,
+        addMovieError: state.error.addMovieError,
+        open: state.movie.dialogOpen
     }
 }
 
 const mapDispatchToProps = {
     addNewMovie,
-    getGenres
+    getGenres,
+    setOpen,
+    setClosed
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddMovieDialog)

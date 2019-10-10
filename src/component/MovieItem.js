@@ -1,90 +1,106 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getMovie, likeMovie, dislikeMovie, removeDislike, removeLike } from '../store/actions/MovieActions'
-import ThumbUp from '@material-ui/icons/ThumbUp'
-import ThumbDown from '@material-ui/icons/ThumbDown'
+import { getMovie, addComment } from '../store/actions/MovieActions'
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import ReactTooltip from 'react-tooltip';
+import MovieCard from './MovieCard';
 
 class MovieItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            commentText: '',
+            snackbarOpen: false
+        }
+    }
     componentDidMount() {
         this.props.getMovie(this.props.match.params.id);
-        console.log(this.props.movie);
     }
-    likeMovie = (movieId) => {
-        this.props.likeMovie(movieId);
+    componentDidUpdate() {
+        ReactTooltip.rebuild();
     }
-    dislikeMovie = (movieId) => {
-        this.props.dislikeMovie(movieId);
+    keyPress = (e) => {
+        if(e.keyCode === 13 && !this.isEmptyOrSpaces(this.state.commentText)){
+            if(this.state.commentText.length > 500) {
+                this.setState({
+                    snackbarOpen: true
+                })
+            } else {
+                this.props.addComment({text: this.state.commentText, movie_id: this.props.movie.id});
+                this.setState({
+                    commentText: ''
+                })
+            }
+            document.getElementById("commentText").blur();
+        }
     }
-    removeLike = (movieId) => {
-        this.props.removeLike(movieId);
+    isEmptyOrSpaces = (str) => {
+        return str === null || str.match(/^ *\n*$/) !== null;
     }
-    removeDislike = (movieId) => {
-        this.props.removeDislike(movieId);
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+    closeSnackbar = () => {
+        this.setState({
+            snackbarOpen: false
+        })
     }
     render() {
+        const comments =  this.props.movie.comments && this.props.movie.comments.map(comment => 
+            <div className="card mt-1 mb-1 mx-2" key={comment.id}>
+                <div className="card-content m-2">
+                    <h6>{comment.username}</h6>
+                    {comment.text}
+                </div>
+            </div>
+        );
+        
         return (
-            <div className="card mt-2 p-3">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-sm-3 m-auto">
-                            <img src={this.props.movie.image_url} className="image" alt=""/>
-                        </div>
-                        <div className="col">
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col">
-                                        <h4 className="card-title">
-                                            {this.props.movie.title}
-                                        </h4>
-                                    </div>
-                                    <div className="col-sm-3">
-                                        {this.props.movie.user_liked ? (
-                                            <ThumbUp 
-                                            style={{cursor:'pointer'}}  
-                                            onClick={() => this.removeLike(this.props.movie.id)}
-                                            className="mr-1 mb-1 text-success"></ThumbUp> 
-                                        ) : (
-                                            <ThumbUp
-                                            style={{cursor:'pointer'}}  
-                                            onClick={() => this.likeMovie(this.props.movie.id)}
-                                            className="mr-1 mb-1"></ThumbUp> 
-                                        )}
-                                        {this.props.movie.number_of_likes}
-                                        {this.props.movie.user_disliked ? (
-                                            <ThumbDown
-                                            style={{cursor:'pointer'}}  
-                                            onClick={() => this.removeDislike(this.props.movie.id)} 
-                                            className="ml-2 mr-1 text-danger"></ThumbDown>
-                                        ) : (
-                                            <ThumbDown
-                                            style={{cursor:'pointer'}} 
-                                            onClick={() => this.dislikeMovie(this.props.movie.id)} 
-                                            className="ml-2 mr-1"></ThumbDown>
-                                        )}
-                                         {this.props.movie.number_of_dislikes}
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <p className="float-right">
-                                            Views: {this.props.movie.number_of_views}
-                                        </p> 
-                                    </div>
-                                </div>
-                            </div>
-                            {this.props.movie.genre && <p className="ml-3">
-                                {this.props.movie.genre.name}
-                            </p> }
-                                
-                        <div className="card-content">
-                            <div className="card">
-                                <div className="card-content m-3">
-                                    {this.props.movie.description}
-                                </div>
-                            </div>
-                        </div>
+            <div>
+                <Snackbar
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                    }}
+                    open={this.state.snackbarOpen}
+                    autoHideDuration={5000}
+                    onClose={this.closeSnackbar}
+                >
+                    <SnackbarContent
+                        aria-describedby="client-snackbar"
+                        message={
+                            <h6 className="mt-2">Comment is too long</h6>
+                        }
+                        action={[
+                            <button key="close" className="btn btn-secondary" onClick={this.closeSnackbar}>Close</button>
+                        ]}
+                    />
+                </Snackbar>
+                <MovieCard movie={this.props.movie}></MovieCard>
+                <div className="card mt-3 mx-3 myColor">
+                    <div className="card-content">
+                        {comments}
+                        <div className="card card mt-1 mx-2 mb-1 px-2 py-2">
+                            <textarea
+                                cols="30" 
+                                rows="2"
+                                name="commentText"
+                                id="commentText"
+                                onChange={this.handleChange}
+                                onKeyDown={this.keyPress}
+                                value={this.state.commentText}
+                                className="form-control"
+                                placeholder="Write a comment..."
+                            ></textarea>
                         </div>
                     </div>
                 </div>
-        </div>
+                <ReactTooltip effect="solid"/>
+            </div>
         )
     }
 }
@@ -97,10 +113,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     getMovie,
-    likeMovie,
-    dislikeMovie,
-    removeLike,
-    removeDislike
+    addComment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieItem)

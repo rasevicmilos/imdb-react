@@ -31,3 +31,23 @@ export const REMOVE_DISLIKE = 'REMOVE_DISLIKE';
 
 export const GET_GENRES = 'GET_GENRES';
 export const SET_GENRES = 'SET_GENRES';
+
+export const ADD_MOVIE_ERROR = 'ADD_MOVIE_ERROR';
+
+export const SET_OPEN = 'SET_OPEN';
+export const SET_CLOSED = 'SET_CLOSED';
+
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const SET_COMMENT = 'SET_COMMENT';
+
+export const GET_WATCHLIST = 'GET_WATCHLIST';
+export const SET_WATCHLIST = 'SET_WATCHLIST';
+
+export const ADD_TO_WATCHLIST = 'ADD_TO_WATCHLIST';
+export const SET_TO_WATCHLIST = 'SET_TO_WATCHLIST';
+
+export const REMOVE_FROM_WATCHLIST = 'REMOVE_FROM_WATCHLIST';
+export const UNSET_FROM_WATCHLIST = 'UNSET_FROM_WATCHLIST';
+
+export const MARK_AS_WATCHED = 'MARK_AS_WATCHED';
+export const SET_AS_WATCHED = 'SET_AS_WATCHED';

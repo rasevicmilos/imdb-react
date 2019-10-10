@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import { movieService } from '../../services/MovieService';
-import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked, setGenre } from '../actions/MovieActions';
+import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked, setGenre, addMovieError, setClosed, setComment, setWatchList, setToWatchList, unsetFromWatchList, setAsWatched } from '../actions/MovieActions';
 
 export function* moviesGet({ payload }) {
   try {
@@ -25,8 +25,9 @@ export function* movieAddNew({ payload }) {
   try{
     const { data } = yield call(movieService.addNewMovie, payload);
     yield put(setNewMovie(data));
+    yield put(setClosed());
   } catch (error){
-    console.log(error);
+    yield put(addMovieError(error.response.data.errors));
   }
 }
 
@@ -73,6 +74,51 @@ export function* movieRemoveDislike({ payload }) {
   try {
     const { data } = yield call(movieService.removeDislike, payload);
     yield put(setLiked(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* commentAdd({ payload }) {
+  try {
+    const { data } = yield call(movieService.addComment, payload);
+    yield put(setComment(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* watchListGet() {
+  try {
+    const { data } = yield call(movieService.getWatchList);
+    yield put(setWatchList(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* watchListAdd({ payload }){
+  try {
+    const { data } = yield call(movieService.addToWatchList, payload)
+    yield put(setToWatchList(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* watchListRemove({ payload }) {
+  try {
+    const { data } = yield call(movieService.removeFromWatchList, payload);
+    yield put(unsetFromWatchList(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* watchedAdd({ payload }) {
+  try {
+    const { data } = yield call(movieService.markAsWatched, payload);
+    yield put(setAsWatched(data));
   } catch (error) {
     console.log(error);
   }

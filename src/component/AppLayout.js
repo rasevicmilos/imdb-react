@@ -9,6 +9,7 @@ import Home from '../containers/Home';
 import { authUser } from '../store/actions/AuthActions';
 import Navbar from './Navbar';
 import MovieItem from './MovieItem';
+import WatchList from './WatchList';
 
 class AppLayout extends React.Component {
   componentDidUpdate(prevProps) {
@@ -27,6 +28,7 @@ class AppLayout extends React.Component {
         <Navbar history={this.props.history}></Navbar>
         <Route exact path="/home/:id" component={Home} history={this.props.history}/>
         <Route exact path="/movie/:id" component={MovieItem} />
+        <Route exact path="/watchlist" component={WatchList} history={this.props.history}/>
       </div>
     ) : (
       <div>

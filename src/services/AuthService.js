@@ -19,6 +19,7 @@ class AuthService extends ApiService {
     if (token && user) {
       this.setAuthorizationHeader();
       this.api.setUnauthorizedCallback(this.destroySession.bind(this));
+      this.api.setRefreshTokenCallback(this.refreshSession.bind(this));
     }
   };
 
@@ -39,6 +40,11 @@ class AuthService extends ApiService {
   destroySession = () => {
     localStorage.clear();
     this.api.removeHeaders(['Authorization']);
+  };
+
+  refreshSession = async () => {
+    const { data } = await this.apiClient.post('api/auth/refresh');
+    this.createSession(data);
   };
 
   login = async loginData => {

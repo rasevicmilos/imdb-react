@@ -31,3 +31,32 @@ code {
 .myColor {
   background-color: #f2f2f2;
 }
+
+.lightBlue {
+  background-color: #4578d1;
+}
+
+.addToWatchListButton:hover {
+  color: #2855c7;
+  cursor: pointer;
+}
+
+.removeFromWatchListButton:hover {
+  color: #ad2b1f;
+  cursor: pointer;
+}
+
+.dislikeButton:hover {
+  color: #2855c7;
+  cursor: pointer;
+}
+
+.likeButton:hover {
+  color: #2855c7;
+  cursor: pointer;
+}
+
+.markAsWatchedButton:hover {
+  color: #009c08;
+  cursor: pointer;
+}
