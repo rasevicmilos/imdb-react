@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import { push, go} from 'connected-react-router';
 import { movieService } from '../../services/MovieService';
-import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked, setGenre, addMovieError, setClosed, setComment, setWatchList, setToWatchList, unsetFromWatchList, setAsWatched, setMostPopular, setComments, setCommentsActivePage, setCommentsFirstPageFetched, setMoreComments } from '../actions/MovieActions';
+import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked, setGenre, addMovieError, setClosed, setComment, setWatchList, setToWatchList, unsetFromWatchList, setAsWatched, setMostPopular, setComments, setCommentsActivePage, setCommentsFirstPageFetched, setMoreComments, setRelated } from '../actions/MovieActions';
 
 export function* moviesGet({ payload }) {
   try {
@@ -192,6 +192,18 @@ export function* commentsGet({ payload }) {
     } else {
       yield put(setCommentsFirstPageFetched(false));
     }
+  } catch (error) {
+    if(error.response.data.status === "Token is Expired"){
+      yield put(push('/home/1'));
+      yield put(go());
+    } 
+  }
+}
+
+export function* relatedGet({ payload }) {
+  try {
+    const { data } = yield call(movieService.getRelated, payload);
+    yield put(setRelated(data));
   } catch (error) {
     if(error.response.data.status === "Token is Expired"){
       yield put(push('/home/1'));

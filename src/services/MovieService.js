@@ -11,7 +11,8 @@ const ENDPOINTS = {
   ADD_TO_WATCHLIST: 'api/add-to-watch-list/',
   REMOVE_FROM_WATCHLIST: 'api/remove-from-watch-list/',
   ADD_TO_WATCHED: 'api/add-to-watched/',
-  MOST_POPULAR: 'api/most-popular'
+  MOST_POPULAR: 'api/most-popular',
+  RELATED_MOVIES: 'api/related-movies/'
 };
 
 class MovieService extends ApiService {
@@ -79,6 +80,10 @@ class MovieService extends ApiService {
   getComments = async (payload) => {
     const { data } = await this.apiClient.get(ENDPOINTS.COMMENTS + '?movie=' + payload.movieId + '&page=' + payload.page);
     return data;
+  }
+
+  getRelated = movieId => {
+    return this.apiClient.get(ENDPOINTS.RELATED_MOVIES + movieId)
   }
 }
 

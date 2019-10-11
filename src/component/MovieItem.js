@@ -5,6 +5,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import ReactTooltip from 'react-tooltip';
 import MovieCard from './MovieCard';
+import RelatedMovies from './RelatedMovies';
 
 class MovieItem extends Component {
     constructor(props) {
@@ -18,8 +19,11 @@ class MovieItem extends Component {
     componentDidMount() {
         this.props.getMovie(this.props.match.params.id);
     }
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         ReactTooltip.rebuild();
+        if (this.props.match.params.id !== prevProps.match.params.id) {
+            this.props.getMovie(this.props.match.params.id);
+        }
     }
     keyPress = (e) => {
         if(e.keyCode === 13 && !this.isEmptyOrSpaces(this.state.commentText)){
@@ -83,7 +87,14 @@ class MovieItem extends Component {
                         ]}
                     />
                 </Snackbar>
-                <MovieCard movie={this.props.movie} navigatable={false} homepage={false}></MovieCard>
+                <div className="row">
+                    <div className="col">
+                        <MovieCard movie={this.props.movie} navigatable={false} homepage={false}></MovieCard>
+                    </div>
+                    <div className="col-2">
+                        <RelatedMovies movieId={this.props.movie.id} history={this.props.history}></RelatedMovies>
+                    </div>
+                </div>
                 <div className="card mt-3 mx-3 myColor">
                     <div className="card-content">
                         { !this.props.firstPageFetched && <div className="card mt-1 mb-1 mx-2">
