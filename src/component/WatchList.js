@@ -10,7 +10,7 @@ class WatchList extends Component {
     renderWatchListMovies = () => {
         return this.props.moviesInWatchList.length > 0 ? (
             this.props.moviesInWatchList.map(movie => 
-                <MovieCard movie={movie} key={movie.id} history={this.props.history}></MovieCard>
+                <MovieCard movie={movie} key={movie.id} history={this.props.history} navigatable={true} homepage={false}></MovieCard>
             )
         ) 
         : (

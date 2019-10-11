@@ -4,15 +4,14 @@ const ENDPOINTS = {
   MOVIES: '/api/movies?page=',
   MOVIE: '/api/movies/',
   SEARCH: '/api/search?query=',
-  LIKE: '/api/like/',
-  DISLIKE: '/api/dislike/',
-  REMOVE_LIKE: '/api/remove-like/',
-  REMOVE_DISLIKE: '/api/remove-dislike/',
-  ADD_COMMENT: '/api/comments',
+  LIKE: '/api/like',
+  DISLIKE: '/api/dislike',
+  COMMENTS: '/api/comments',
   GET_WATCHLIST: 'api/get-movies',
   ADD_TO_WATCHLIST: 'api/add-to-watch-list/',
   REMOVE_FROM_WATCHLIST: 'api/remove-from-watch-list/',
-  ADD_TO_WATCHED: 'api/add-to-watched/'
+  ADD_TO_WATCHED: 'api/add-to-watched/',
+  MOST_POPULAR: 'api/most-popular'
 };
 
 class MovieService extends ApiService {
@@ -33,23 +32,23 @@ class MovieService extends ApiService {
   }
 
   like = (movieId) => {
-    return this.apiClient.get(ENDPOINTS.LIKE + movieId);
+    return this.apiClient.put(ENDPOINTS.LIKE, {movie_id: movieId, like: true});
   }
 
   dislike = (movieId) => {
-    return this.apiClient.get(ENDPOINTS.DISLIKE + movieId);
+    return this.apiClient.put(ENDPOINTS.DISLIKE, {movie_id: movieId, dislike: true});
   }
 
   removeLike = (movieId) => {
-    return this.apiClient.get(ENDPOINTS.REMOVE_LIKE + movieId)
+    return this.apiClient.put(ENDPOINTS.LIKE, {movie_id: movieId, like: false});
   }
 
   removeDislike = (movieId) => {
-    return this.apiClient.get(ENDPOINTS.REMOVE_DISLIKE + movieId)
+    return this.apiClient.put(ENDPOINTS.DISLIKE, {movie_id: movieId, dislike: false});
   }
 
   addComment = (comment) => {
-    return this.apiClient.post(ENDPOINTS.ADD_COMMENT, comment);
+    return this.apiClient.post(ENDPOINTS.COMMENTS, comment);
   }
 
   getWatchList = () => {
@@ -61,11 +60,25 @@ class MovieService extends ApiService {
   }
 
   removeFromWatchList = (movieId) => {
-    return this.apiClient.get(ENDPOINTS.REMOVE_FROM_WATCHLIST + movieId);
+    return this.apiClient.delete(ENDPOINTS.REMOVE_FROM_WATCHLIST + movieId);
   }
 
   markAsWatched = (movieId) => {
-    return this.apiClient.get(ENDPOINTS.ADD_TO_WATCHED + movieId);
+    return this.apiClient.put(ENDPOINTS.ADD_TO_WATCHED + movieId);
+  }
+
+  getMostPopular = () => {
+    return this.apiClient.get(ENDPOINTS.MOST_POPULAR);
+  }
+
+  getLastPage = async (movieId) => {
+    const { data } = await this.apiClient.get(ENDPOINTS.COMMENTS + '-last-page?movie=' + movieId);
+    return data;
+  }
+
+  getComments = async (payload) => {
+    const { data } = await this.apiClient.get(ENDPOINTS.COMMENTS + '?movie=' + payload.movieId + '&page=' + payload.page);
+    return data;
   }
 }
 

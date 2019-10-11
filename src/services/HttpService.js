@@ -6,7 +6,7 @@ class HttpService {
     this.client = axios.create(options);
     this.client.interceptors.response.use(this.handleSuccessResponse, this.handleErrorResponse);
     this.unauthorizedCallback = () => {};
-    this.refreshTokenCallback = () => {};
+    this.refreshTokenCallback = async () => {};
   }
 
   attachHeaders(headers) {
@@ -21,14 +21,14 @@ class HttpService {
     return response;
   }
 
-  handleErrorResponse = (error) => {
+  handleErrorResponse = async (error) => {
     const { status } = error.response;
     const message = error.response.data.status;
 
     switch (status) {
       case 401: {
         if (message === 'Token is Expired'){
-          this.refreshTokenCallback();
+          await this.refreshTokenCallback();
         } else {
           this.unauthorizedCallback();
         }

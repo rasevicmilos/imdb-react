@@ -1,4 +1,4 @@
-import { SET_MOVIES, SET_PAGES, SET_MOVIE, SET_NEW_MOVIE, SET_QUERY, SET_LIKED, SET_GENRE, SET_OPEN, SET_CLOSED, SET_COMMENT, SET_WATCHLIST, SET_TO_WATCHLIST, UNSET_FROM_WATCHLIST, SET_AS_WATCHED } from '../actions/ActionTypes';
+import { SET_MOVIES, SET_PAGES, SET_MOVIE, SET_NEW_MOVIE, SET_QUERY, SET_LIKED, SET_GENRE, SET_OPEN, SET_CLOSED, SET_COMMENT, SET_WATCHLIST, SET_TO_WATCHLIST, UNSET_FROM_WATCHLIST, SET_AS_WATCHED, SET_MOST_POPULAR, SET_COMMENTS, SET_COMMENTS_FIRST_PAGE_FETCHED, SET_COMMENTS_ACTIVE_PAGE, SET_MORE_COMMENTS } from '../actions/ActionTypes';
 
 const initialState = {
   all: [],
@@ -7,7 +7,11 @@ const initialState = {
   queryString: '',
   activeGenre: 0,
   dialogOpen: false,
-  moviesInWatchList: []
+  moviesInWatchList: [],
+  mostPopular: [],
+  activeMovieComments: [],
+  commentsActivePage: 0,
+  commentsFirstPageFetched: false
 };
 const movieReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -40,7 +44,9 @@ const movieReducer = (state = initialState, action) => {
     case SET_CLOSED: 
       return { ...state, dialogOpen: false}
     case SET_COMMENT:
-      return { ...state, activeMovie: {...state.activeMovie, comments: [ ...state.activeMovie.comments, action.payload] }}
+      return { ...state, activeMovieComments: [ ...state.activeMovieComments, action.payload] }
+    case SET_COMMENTS:
+      return { ...state, activeMovieComments: action.payload}
     case SET_WATCHLIST:
       return { ...state, moviesInWatchList: action.payload }
     case SET_TO_WATCHLIST:
@@ -70,6 +76,14 @@ const movieReducer = (state = initialState, action) => {
             ? action.payload
             : movie
         )}
+    case SET_MOST_POPULAR:
+      return { ...state, mostPopular: action.payload}
+    case SET_COMMENTS_ACTIVE_PAGE:
+      return { ...state, commentsActivePage: action.payload}
+    case SET_COMMENTS_FIRST_PAGE_FETCHED:
+      return { ...state, commentsFirstPageFetched: action.payload}
+    case SET_MORE_COMMENTS: 
+      return { ...state, activeMovieComments: [...action.payload, ...state.activeMovieComments]}
     default:
       return state;
   }

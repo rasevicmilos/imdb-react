@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getMovie, addComment } from '../store/actions/MovieActions'
+import { getMovie, addComment, getComments } from '../store/actions/MovieActions'
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import ReactTooltip from 'react-tooltip';
@@ -49,8 +49,11 @@ class MovieItem extends Component {
             snackbarOpen: false
         })
     }
+    getComments = () => {
+        this.props.getComments({movieId: this.props.match.params.id, page: (this.props.activePage - 1) })
+    }
     render() {
-        const comments =  this.props.movie.comments && this.props.movie.comments.map(comment => 
+        const comments =  this.props.activeMovieComments && this.props.activeMovieComments.map(comment => 
             <div className="card mt-1 mb-1 mx-2" key={comment.id}>
                 <div className="card-content m-2">
                     <h6>{comment.username}</h6>
@@ -80,9 +83,14 @@ class MovieItem extends Component {
                         ]}
                     />
                 </Snackbar>
-                <MovieCard movie={this.props.movie}></MovieCard>
+                <MovieCard movie={this.props.movie} navigatable={false} homepage={false}></MovieCard>
                 <div className="card mt-3 mx-3 myColor">
                     <div className="card-content">
+                        { !this.props.firstPageFetched && <div className="card mt-1 mb-1 mx-2">
+                            <div className="card-content m-2 text-center">
+                                <button onClick={this.getComments} className="btn btn-light">Show more comments</button>
+                            </div>
+                        </div> }
                         {comments}
                         <div className="card card mt-1 mx-2 mb-1 px-2 py-2">
                             <textarea
@@ -107,13 +115,17 @@ class MovieItem extends Component {
 
 const mapStateToProps = state => {
     return {
-        movie: state.movie.activeMovie
+        movie: state.movie.activeMovie,
+        activeMovieComments: state.movie.activeMovieComments,
+        firstPageFetched: state.movie.commentsFirstPageFetched,
+        activePage: state.movie.commentsActivePage
     }
 }
 
 const mapDispatchToProps = {
     getMovie,
-    addComment
+    addComment,
+    getComments
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieItem)

@@ -9,6 +9,7 @@ import MovieCard from '../component/MovieCard';
 import Pages from '../component/Pages';
 import AddMovieDialog from '../component/AddMovieDialog';
 import Search from '../component/Search';
+import MostPopular from '../component/MostPopular';
 
 class Home extends Component {
   componentDidMount() {
@@ -25,7 +26,7 @@ class Home extends Component {
   }
 
   renderMovies = () => {
-    return this.props.movies.map(movie => <MovieCard key={movie.id} movie={movie} history={this.props.history}/>);
+    return this.props.movies.map(movie => <MovieCard key={movie.id} movie={movie} history={this.props.history} navigatable={true} homepage={true}/>);
   };
 
   isEmptyOrSpaces = (str) => {
@@ -35,12 +36,19 @@ class Home extends Component {
   render() {
     return (
       <div className="container">
-          <div className="mb-4">
-            <Search history={this.props.history}></Search>
-            <AddMovieDialog></AddMovieDialog>
+        <div className="row">
+          <div className="col-9">
+            <div className="mb-4">
+              <Search history={this.props.history}></Search>
+              <AddMovieDialog></AddMovieDialog>
+            </div>
+            {this.renderMovies()}
+            <Pages></Pages>
           </div>
-          {this.renderMovies()}
-          <Pages></Pages>
+          <div className="col-3">
+            <MostPopular history={this.props.history}></MostPopular>
+          </div>
+        </div>   
       </div>
     );
   }

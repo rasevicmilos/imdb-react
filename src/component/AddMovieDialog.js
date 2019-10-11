@@ -117,7 +117,6 @@ class AddMovieDialog extends Component {
 
     componentDidMount(){
         this.props.getGenres();
-        console.log(this.props.genres);
     }
 
     render() {

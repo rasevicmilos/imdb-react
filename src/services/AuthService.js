@@ -43,8 +43,12 @@ class AuthService extends ApiService {
   };
 
   refreshSession = async () => {
-    const { data } = await this.apiClient.post('api/auth/refresh');
-    this.createSession(data);
+    try {
+      const { data } = await this.apiClient.post('api/auth/refresh');
+      this.createSession(data);
+    } catch (error) {
+      console.log('Token is already refreshed');
+    }
   };
 
   login = async loginData => {
@@ -55,7 +59,7 @@ class AuthService extends ApiService {
 
   signup = async signupData => {
     const { data } = await this.apiClient.post(ENDPOINTS.REGISTER, signupData);
-    console.log(data);
+    this.createSession(data);
     return data;
   };
 

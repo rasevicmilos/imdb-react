@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import TextField from '@material-ui/core/TextField';
-import { searchMovies, getMovies, setQuery, setGenre } from '../store/actions/MovieActions';
+import { searchMovies, setGenre } from '../store/actions/MovieActions';
 
 
 class Search extends Component {
@@ -28,14 +28,8 @@ class Search extends Component {
         this.search();
     }
     search() {
-        // if(this.isEmptyOrSpaces(this.state.query)){
-        //     this.props.setQuery("");
-        //     this.props.getMovies(1);
-        //     this.props.history.push('/home/1');
-        // } else {
         this.props.searchMovies({query: this.state.query, page: 1, genre: this.state.genre});
         this.props.history.push('/home/1');
-        // }
     }
     isEmptyOrSpaces = (str) => {
         return str === null || str.match(/^ *$/) !== null;
@@ -93,8 +87,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     searchMovies,
-    getMovies,
-    setQuery,
     setGenre
 }
 

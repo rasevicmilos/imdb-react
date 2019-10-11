@@ -20,16 +20,16 @@ code {
 }
 
 .image {
-  min-width: 80%;
-  min-height: 80%;
-  max-height: 80%;
-  max-width: 80%;
+  min-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  max-width: 100%;
   display: block;
   margin: auto;
 }
 
 .myColor {
-  background-color: #f2f2f2;
+  background-color: #f7f7f7;
 }
 
 .lightBlue {
@@ -59,4 +59,9 @@ code {
 .markAsWatchedButton:hover {
   color: #009c08;
   cursor: pointer;
+}
+
+.mostPopularMovie:hover {
+  cursor: pointer;
+  background-color: #dedede;
 }

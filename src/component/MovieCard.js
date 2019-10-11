@@ -68,23 +68,40 @@ class MovieCard extends Component {
           <div className="container">
             <div className="row movieRow">
               <div className="col-sm-4 col-lg-3 m-auto">
-                <img 
+                {this.props.navigatable ? (
+                  <img 
                   onClick={() => this.showMovie(this.props.movie.id)} 
                   src={this.props.movie.image_url} 
                   className="image" 
                   alt=""
                   style={{cursor:'pointer'}}
                   />
+                ) : (
+                  <img  
+                  src={this.props.movie.image_url} 
+                  className="image" 
+                  alt=""
+                  />
+                )
+                }
               </div>
               <div className="col">
                 <div className="container">
                     <div className="row">
                         <div className="col">
+                          {this.props.navigatable ? (
                             <h4 className="card-title" 
                               style={{cursor:'pointer'}} 
                               onClick={() => this.showMovie(this.props.movie.id)}>
                                 {this.props.movie.title}
                             </h4>
+                          ) : (
+                            <h4 className="card-title" 
+                              >
+                                {this.props.movie.title}
+                            </h4>
+                          )}
+                            
                         </div>
                         <div className="col-sm-3">
                             {this.props.movie.user_liked ? (
@@ -126,7 +143,7 @@ class MovieCard extends Component {
                             </RemoveCircle>
                           )}
                         </div>
-                        <div className="col-sm-2">
+                        <div className="col-sm-3">
                           {this.props.movie.number_of_views ? (
                               <p className="float-right">Views: {this.props.movie.number_of_views}</p>
                           ):(
@@ -140,7 +157,7 @@ class MovieCard extends Component {
                               {this.props.movie.genre.name}
                           </p> }
                       </div>
-                      <div className="col-3">
+                      <div className="col-4">
                           {this.props.movie.watched ?( <p>
                               <CheckCircle className="text-success mr-1 mb-1"></CheckCircle> 
                               Watched
@@ -154,7 +171,11 @@ class MovieCard extends Component {
                 <div className="card-content">
                   <div className="card myColor">
                     <div className="card-content m-3">
-                      {this.props.movie.description}
+                      { (this.props.homepage && this.props.movie.description.length > 150) ? (
+                        this.props.movie.description.substring(0, 150) + '...'
+                      ) : (
+                        this.props.movie.description
+                      )}
                     </div>
                   </div>
                 </div>
