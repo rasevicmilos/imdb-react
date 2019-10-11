@@ -6,9 +6,62 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.myNavbar {
+  min-height: 100px;
+  background-color: #30369c;
+}
+
+.image {
+  min-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  display: block;
+  margin: auto;
+}
+
+.myColor {
+  background-color: #f7f7f7;
+}
+
+.lightBlue {
+  background-color: #4578d1;
+}
+
+.addToWatchListButton:hover {
+  color: #2855c7;
+  cursor: pointer;
+}
+
+.removeFromWatchListButton:hover {
+  color: #ad2b1f;
+  cursor: pointer;
+}
+
+.dislikeButton:hover {
+  color: #2855c7;
+  cursor: pointer;
+}
+
+.likeButton:hover {
+  color: #2855c7;
+  cursor: pointer;
+}
+
+.markAsWatchedButton:hover {
+  color: #009c08;
+  cursor: pointer;
+}
+
+.mostPopularMovie:hover {
+  cursor: pointer;
+  background-color: #dedede;
 }
