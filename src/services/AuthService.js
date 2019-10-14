@@ -3,7 +3,7 @@ import ApiService from './ApiService';
 const ENDPOINTS = {
   LOGIN: '/api/auth/login',
   REGISTER: '/api/auth/register',
-  LOGOUT: '/logout'
+  LOGOUT: '/api/auth/logout'
 };
 
 class AuthService extends ApiService {
@@ -18,8 +18,8 @@ class AuthService extends ApiService {
 
     if (token && user) {
       this.setAuthorizationHeader();
-
       this.api.setUnauthorizedCallback(this.destroySession.bind(this));
+      this.api.setRefreshTokenCallback(this.refreshSession.bind(this));
     }
   };
 
@@ -27,7 +27,7 @@ class AuthService extends ApiService {
     const token = this.getToken();
     if (token) {
       this.api.attachHeaders({
-        Authorization: `Bearer ${token.access_token}`
+        Authorization: `Bearer ${token}`
       });
     }
   };
@@ -42,6 +42,15 @@ class AuthService extends ApiService {
     this.api.removeHeaders(['Authorization']);
   };
 
+  refreshSession = async () => {
+    try {
+      const { data } = await this.apiClient.post('api/auth/refresh');
+      this.createSession(data);
+    } catch (error) {
+      console.log('Token is already refreshed');
+    }
+  };
+
   login = async loginData => {
     const { data } = await this.apiClient.post(ENDPOINTS.LOGIN, loginData);
     this.createSession(data);
@@ -50,7 +59,7 @@ class AuthService extends ApiService {
 
   signup = async signupData => {
     const { data } = await this.apiClient.post(ENDPOINTS.REGISTER, signupData);
-
+    this.createSession(data);
     return data;
   };
 
