@@ -7,6 +7,8 @@ import ReactTooltip from 'react-tooltip';
 import MovieCard from './MovieCard';
 import RelatedMovies from './RelatedMovies';
 
+const ENTER_KEY = 13;
+
 class MovieItem extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +28,7 @@ class MovieItem extends Component {
         }
     }
     keyPress = (e) => {
-        if(e.keyCode === 13 && !this.isEmptyOrSpaces(this.state.commentText)){
+        if(e.keyCode === ENTER_KEY && !this.isEmptyOrSpaces(this.state.commentText)){
             if(this.state.commentText.length > 500) {
                 this.setState({
                     snackbarOpen: true
@@ -38,6 +40,7 @@ class MovieItem extends Component {
                 })
             }
             document.getElementById("commentText").blur();
+            // this.commentInput.blur()
         }
     }
     isEmptyOrSpaces = (str) => {
@@ -68,57 +71,66 @@ class MovieItem extends Component {
         
         return (
             <div>
-                <Snackbar
-                    anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                    }}
-                    open={this.state.snackbarOpen}
-                    autoHideDuration={5000}
-                    onClose={this.closeSnackbar}
-                >
-                    <SnackbarContent
-                        aria-describedby="client-snackbar"
-                        message={
-                            <h6 className="mt-2">Comment is too long</h6>
-                        }
-                        action={[
-                            <button key="close" className="btn btn-secondary" onClick={this.closeSnackbar}>Close</button>
-                        ]}
-                    />
-                </Snackbar>
-                <div className="row">
-                    <div className="col">
-                        <MovieCard movie={this.props.movie} navigatable={false} homepage={false}></MovieCard>
-                    </div>
-                    <div className="col-2">
-                        <RelatedMovies movieId={this.props.movie.id} history={this.props.history}></RelatedMovies>
-                    </div>
-                </div>
-                <div className="card mt-3 mx-3 myColor">
-                    <div className="card-content">
-                        { !this.props.firstPageFetched && <div className="card mt-1 mb-1 mx-2">
-                            <div className="card-content m-2 text-center">
-                                <button onClick={this.getComments} className="btn btn-light">Show more comments</button>
+                {!this.props.loading ? (
+                    <div>
+                        <Snackbar
+                            anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                            }}
+                            open={this.state.snackbarOpen}
+                            autoHideDuration={5000}
+                            onClose={this.closeSnackbar}
+                        >
+                            <SnackbarContent
+                                aria-describedby="client-snackbar"
+                                message={
+                                    <h6 className="mt-2">Comment is too long</h6>
+                                }
+                                action={[
+                                    <button key="close" className="btn btn-secondary" onClick={this.closeSnackbar}>Close</button>
+                                ]}
+                            />
+                        </Snackbar>
+                        <div className="row">
+                            <div className="col">
+                                <MovieCard movie={this.props.movie} navigatable={false} homepage={false}></MovieCard>
                             </div>
-                        </div> }
-                        {comments}
-                        <div className="card card mt-1 mx-2 mb-1 px-2 py-2">
-                            <textarea
-                                cols="30" 
-                                rows="2"
-                                name="commentText"
-                                id="commentText"
-                                onChange={this.handleChange}
-                                onKeyDown={this.keyPress}
-                                value={this.state.commentText}
-                                className="form-control"
-                                placeholder="Write a comment..."
-                            ></textarea>
+                            <div className="col-2">
+                                {this.props.movie.id && <RelatedMovies movie={this.props.movie} history={this.props.history}></RelatedMovies>}
+                            </div>
                         </div>
+                        <div className="card mt-3 mx-3 myColor">
+                            <div className="card-content">
+                                { !this.props.firstPageFetched && <div className="card mt-1 mb-1 mx-2">
+                                    <div className="card-content m-2 text-center">
+                                        <button onClick={this.getComments} className="btn btn-light">Show more comments</button>
+                                    </div>
+                                </div> }
+                                {comments}
+                                <div className="card card mt-1 mx-2 mb-1 px-2 py-2">
+                                    <textarea
+                                        cols="30" 
+                                        rows="2"
+                                        name="commentText"
+                                        id="commentText"
+                                        ref = {(ref) => {this.commentInput = ref;}}
+                                        onChange={this.handleChange}
+                                        onKeyDown={this.keyPress}
+                                        value={this.state.commentText}
+                                        className="form-control"
+                                        placeholder="Write a comment..."
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <ReactTooltip effect="solid"/>
                     </div>
-                </div>
-                <ReactTooltip effect="solid"/>
+                ) : (
+                    <div className="text-center">
+                        <h1>Loading...</h1>
+                    </div>
+                )}
             </div>
         )
     }
@@ -129,7 +141,8 @@ const mapStateToProps = state => {
         movie: state.movie.activeMovie,
         activeMovieComments: state.movie.activeMovieComments,
         firstPageFetched: state.movie.commentsFirstPageFetched,
-        activePage: state.movie.commentsActivePage
+        activePage: state.movie.commentsActivePage,
+        loading: state.movie.loading
     }
 }
 

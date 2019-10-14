@@ -14,17 +14,16 @@ class Search extends Component {
             genre: 0,
             query: ''
         }
-    
-        this.onChange = this.onChange.bind(this); 
-        this.debouncedOnChange = _.debounce(this.debouncedOnChange.bind(this), 750); 
+     
+        this.debouncedOnChange = _.debounce(this.debounce, 750); 
     }
-    onChange(event) {
+    onChange = (event) => {
         this.setState({
             query: event.target.value
         })
         this.debouncedOnChange();
     } 
-    debouncedOnChange() {
+    debounce = () => {
         this.search();
     }
     search() {
@@ -54,26 +53,29 @@ class Search extends Component {
 
     render() {
         return (
-            <div className="container mt-4">
-                 <div className="float-right ml-4">
+            <div className="row">
+                <div className="col-7">
+                    <TextField
+                        margin="dense"
+                        id="search"
+                        label="Search"
+                        type="text"
+                        name="search"
+                        variant="outlined"
+                        className="float-right bg-white"
+                        onChange={this.onChange}
+                    />
+                </div>
+                 <div className="col-5">
                     <h6>Filter by genre:</h6>
-                    <select onChange={this.setGenre}>
+                    <select value={parseInt(this.props.activeGenre, 10)} onChange={this.setGenre}>
+                        {/* <option value={parseInt(this.props.activeGenre, 10)}>All</option> */}
                         <option value={0}>All</option>
                         {this.props.genres.map(genre => 
                             <option key={genre.id} value={genre.id}>{genre.name}</option>
                         )}
                     </select>
                 </div>
-                <TextField
-                    margin="dense"
-                    id="search"
-                    label="Search"
-                    type="text"
-                    name="search"
-                    variant="outlined"
-                    className="float-right bg-white"
-                    onChange={this.onChange}
-                />
             </div>
         )
     }
@@ -81,7 +83,8 @@ class Search extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        genres: state.genre.genres
+        genres: state.genre.genres,
+        activeGenre: state.movie.activeGenre
     }
 }
 

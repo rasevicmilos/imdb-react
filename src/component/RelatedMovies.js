@@ -4,12 +4,7 @@ import { getRelated } from '../store/actions/MovieActions';
 
 class RelatedMovies extends Component {
     componentDidMount(){
-        this.props.getRelated(this.props.movieId);
-    }
-    componentDidUpdate(prevProps) {
-        if (this.props.movieId !== prevProps.movieId) {
-            this.props.getRelated(this.props.movieId);
-        }
+        this.props.getRelated(this.props.movie.id);
     }
     showMovie = (movieId) => {
         this.props.history.push('/movie/' + movieId);

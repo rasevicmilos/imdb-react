@@ -10,10 +10,16 @@ import Pages from '../component/Pages';
 import AddMovieDialog from '../component/AddMovieDialog';
 import Search from '../component/Search';
 import MostPopular from '../component/MostPopular';
+import AddMovieFromOMDBDialog from '../component/AddMovieFromOMDBDialog';
+import ConfirmAddMovieDialog from '../component/ConfirmAddMovieDialog';
 
 class Home extends Component {
   componentDidMount() {
-    this.props.getMovies(this.props.match.params.id);
+    if(this.isEmptyOrSpaces(this.props.queryString) && this.props.genre === 0) {
+      this.props.getMovies(this.props.match.params.id);
+    } else {
+      this.props.searchMovies({ query: this.props.queryString, page:this.props.match.params.id, genre: this.props.genre});
+    }
   }
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
@@ -39,10 +45,26 @@ class Home extends Component {
         <div className="row">
           <div className="col-9">
             <div className="mb-4">
-              <Search history={this.props.history}></Search>
-              <AddMovieDialog></AddMovieDialog>
+              <div className="row">
+                <div className="col-3 mt-4">
+                  <AddMovieDialog></AddMovieDialog>
+                </div>
+                <div className="col-4 mt-4">
+                  <AddMovieFromOMDBDialog></AddMovieFromOMDBDialog>
+                  <ConfirmAddMovieDialog></ConfirmAddMovieDialog>
+                </div>
+                <div className="col-5 mt-4">
+                  <Search history={this.props.history}></Search>
+                </div>
+              </div>
             </div>
-            {this.renderMovies()}
+            {this.props.loading ? (
+              <div className="text-center">
+                <h1>Loading...</h1>
+              </div>
+            ) : (
+              this.renderMovies()
+            )}
             <Pages></Pages>
           </div>
           <div className="col-3">
@@ -58,7 +80,8 @@ const mapStateToProps = state => {
   return {
     movies: state.movie.all,
     queryString: state.movie.queryString,
-    genre: state.movie.activeGenre
+    genre: state.movie.activeGenre,
+    loading: state.movie.loading
   };
 };
 

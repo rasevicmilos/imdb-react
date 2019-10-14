@@ -121,7 +121,7 @@ class AddMovieDialog extends Component {
 
     render() {
         return (
-            <div className="my-2">
+            <div>
                 <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
                     Add a new movie
                 </Button>

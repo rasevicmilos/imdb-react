@@ -1,10 +1,11 @@
 import { call, put } from 'redux-saga/effects';
 import { push, go} from 'connected-react-router';
 import { movieService } from '../../services/MovieService';
-import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked, setGenre, addMovieError, setClosed, setComment, setWatchList, setToWatchList, unsetFromWatchList, setAsWatched, setMostPopular, setComments, setCommentsActivePage, setCommentsFirstPageFetched, setMoreComments, setRelated } from '../actions/MovieActions';
+import { setMovies, setPages, setMovie, setNewMovie, setQuery, setLiked, setGenre, addMovieError, setClosed, setComment, setWatchList, setToWatchList, unsetFromWatchList, setAsWatched, setMostPopular, setComments, setCommentsActivePage, setCommentsFirstPageFetched, setMoreComments, setRelated, setLoading } from '../actions/MovieActions';
 
 export function* moviesGet({ payload }) {
   try {
+    yield put(setLoading(true));
     const { data } = yield call(movieService.getMovies, payload);
     yield put(setMovies(data.data));
     yield put(setPages(data.last_page));
@@ -13,11 +14,14 @@ export function* moviesGet({ payload }) {
       yield put(push('/home/1'));
       yield put(go());
     } 
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
 export function* movieGet({ payload }) {
   try {
+    yield put(setLoading(true));
     const { data } = yield call(movieService.getMovie, payload);
     const lastPage = yield call(movieService.getLastPage, payload);
     const comments = yield call(movieService.getComments, {movieId: payload, page: lastPage});
@@ -31,9 +35,11 @@ export function* movieGet({ payload }) {
     }
   } catch (error) {
     if(error.response.data.status === "Token is Expired"){
-      yield put(push('/home/1'));
+      yield put(push('/movie/1'));
       yield put(go());
     } 
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
@@ -116,7 +122,7 @@ export function* commentAdd({ payload }) {
     yield put(setComment(data));
   } catch (error) {
     if(error.response.data.status === "Token is Expired"){
-      yield put(push('/home/1'));
+      yield put(push('/movie/1'));
       yield put(go());
     } 
   }
@@ -124,13 +130,16 @@ export function* commentAdd({ payload }) {
 
 export function* watchListGet() {
   try {
+    yield put(setLoading(true));
     const { data } = yield call(movieService.getWatchList);
     yield put(setWatchList(data));
   } catch (error) {
     if(error.response.data.status === "Token is Expired"){
-      yield put(push('/home/1'));
+      yield put(push('/watchlist'));
       yield put(go());
     } 
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
@@ -194,7 +203,7 @@ export function* commentsGet({ payload }) {
     }
   } catch (error) {
     if(error.response.data.status === "Token is Expired"){
-      yield put(push('/home/1'));
+      yield put(push('/movie/1'));
       yield put(go());
     } 
   }
@@ -206,7 +215,7 @@ export function* relatedGet({ payload }) {
     yield put(setRelated(data));
   } catch (error) {
     if(error.response.data.status === "Token is Expired"){
-      yield put(push('/home/1'));
+      yield put(push('/movie/1'));
       yield put(go());
     } 
   }

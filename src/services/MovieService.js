@@ -15,6 +15,7 @@ const ENDPOINTS = {
   RELATED_MOVIES: 'api/related-movies/'
 };
 
+
 class MovieService extends ApiService {
   getMovies = (page) => {
     return this.apiClient.get(ENDPOINTS.MOVIES + page);

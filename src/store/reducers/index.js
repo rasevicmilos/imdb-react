@@ -5,6 +5,7 @@ import authReducer from './AuthReducer';
 import errorReducer from './ErrorReducer';
 import movieReducer from './MovieReducer';
 import genreReducer from './GenreReducer';
+import omdbReducer from './OMDBReducer';
 
 export default history =>
   combineReducers({
@@ -12,5 +13,6 @@ export default history =>
     error: errorReducer,
     movie: movieReducer,
     genre: genreReducer,
+    omdb: omdbReducer,
     router: connectRouter(history)
   });

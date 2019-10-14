@@ -25,7 +25,13 @@ class WatchList extends Component {
                 <div className="text-center lightBlue">
                     <h2 className="p-3 text-light">My Watch List </h2>
                 </div>
-                {this.renderWatchListMovies()}
+                {this.props.loading ? (
+                    <div className="text-center">
+                        <h1>Loading...</h1>
+                    </div>
+                ) : (
+                    this.renderWatchListMovies()
+                )}
             </div>
         )
     }
@@ -33,7 +39,8 @@ class WatchList extends Component {
 
 const mapStateToProps = state => {
     return {
-        moviesInWatchList: state.movie.moviesInWatchList
+        moviesInWatchList: state.movie.moviesInWatchList,
+        loading: state.movie.loading
     }
 }
 
